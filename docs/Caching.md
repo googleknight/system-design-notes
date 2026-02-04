@@ -2,7 +2,11 @@
 
 ## **Core Metric**
 
-Core MetricCache performance is measured by Average Memory Access Time (AMAT):$$AMAT = Hit \ Time + (Miss \ Rate \times Miss \ Penalty)$$ To optimize AMAT, one must tune four key factors:
+Cache performance is measured by Average Memory Access Time (AMAT):
+
+$$AMAT = Hit \ Time + (Miss \ Rate \times Miss \ Penalty)$$
+
+To optimize AMAT, one must tune four key factors:
 
 - **Eviction Policy**
 - **Write Policy**
@@ -157,7 +161,7 @@ When a system grows beyond a single server, _where_ and _how_ the cache is deplo
 To scale a centralized cache, **Sharding** (splitting data into buckets based on IDs) is used. However, standard sharding faces a major issue when the cluster changes.
 
 - **The Scenario:** A cache server crashes, or a new server is added to handle load.
-- **The Problem:** Standard hashing uses `Key % N_Servers`. Changing the number of servers ($N$) invalidates almost **all** existing mappings.
+- **The Problem:** Standard hashing uses `Key % N_Servers`. Changing the number of servers (\(N\)) invalidates almost **all** existing mappings.
 - **Consequence:**
   - Massive cache misses occur.
   - **Cache Warmup/Readiness** takes a long time (minutes to days).
@@ -167,14 +171,14 @@ To scale a centralized cache, **Sharding** (splitting data into buckets based on
 
 - **Definition:** A technique to map keys to cache nodes that minimizes key movement when the cluster resizes.
 - **Mechanism (The Ring):**
-  1.  **The Ring:** Both **Cache Servers** and **Data Keys** are hashed onto the same circular range (0 to $2^{32}-1$).
+  1.  **The Ring:** Both **Cache Servers** and **Data Keys** are hashed onto the same circular range (0 to \(2^{32}-1\)).
   2.  **Placement:** A key is stored on the **next server found moving clockwise** on the ring.
-  3.  **Selection Probability:** The chance of a specific server being picked is $1/N$.
+  3.  **Selection Probability:** The chance of a specific server being picked is \(1/N\).
 
 - **Behavior on Change:**
   - **Node Removed:** Only the keys belonging to that specific node are moved to the next neighbor.
   - **Node Added:** It only takes keys from its immediate successor.
-  - **Result:** Result: Only $\approx \frac{K}{N}$ keys need to be remapped (not the whole keyspace).
+  - **Result:** Result: Only \(\approx \frac{K}{N}\) keys need to be remapped (not the whole keyspace).
 
 - **Optimizing Skewness (Virtual Nodes):**
   - **Problem:** Data might be unevenly distributed (one server holds too much data) due to bad random hashing.
