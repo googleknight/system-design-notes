@@ -1,0 +1,1950 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Comprehensive notes for system design interviews, based on InterviewReady and other top resources.">
+      
+      
+        <meta name="author" content="Shubham Mathur">
+      
+      
+      
+        <link rel="prev" href="../Rate%20Limiting/">
+      
+      
+        <link rel="next" href="../High%20Latency/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Distributed Caching - System Design Interview Ready Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#distributed-caching-and-performance-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="System Design Interview Ready Notes" class="md-header__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            System Design Interview Ready Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Distributed Caching
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../System%20Design/" class="md-tabs__link">
+          
+  
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../DNS/" class="md-tabs__link">
+          
+  
+  
+  Networking & Traffic
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Performance
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Microservices/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="System Design Interview Ready Notes" class="md-nav__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    System Design Interview Ready Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System%20Design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reliability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking & Traffic
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking & Traffic
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DNS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LoadBalancer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Load Balancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CDN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CDN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Rate%20Limiting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rate Limiting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Performance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Caching
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distributed Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-eviction-policies-replacement-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Eviction Policies (Replacement Policies)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Eviction Policies (Replacement Policies)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-lru-least-recently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. LRU (Least Recently Used)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-lfu-least-frequently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. LFU (Least Frequently Used)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-fifo-first-in-first-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. FIFO (First-In, First-Out)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-random-replacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Random Replacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-write-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Write Policies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Write Policies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-write-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Write-Through
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-write-behind-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Write-Behind (Write-Back)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-write-around" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Write-Around
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-write-aside-look-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Write-Aside (Look-Aside)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-challenges-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Challenges &amp; Solutions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-distribution-content-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data Distribution (Content Strategy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data Distribution (Content Strategy)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-optimization-the-heavy-object-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Optimization: The "Heavy Object" Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-optimization-the-active-user-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Optimization: The "Active User" Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-locality-of-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Locality of Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-placement-of-caches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Placement of Cache(s)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Placement of Cache(s)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-mapping-internal-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Mapping (Internal Placement)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-distributed-caching-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Distributed Caching &amp; Scaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Distributed Caching &amp; Scaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Deployment Strategies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="A. Deployment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-in-memory-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. In-Memory Cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-centralized-cache-distributed-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Centralized Cache (Distributed Cache)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-the-scaling-problem-in-centralized-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. The "Scaling Problem" in Centralized Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-solution-consistent-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. The Solution: Consistent Hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updated-summary-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updated Summary Decision Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../High%20Latency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    High Latency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Handling%20traffic%20surge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handling Traffic Surges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Microservices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-eviction-policies-replacement-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Eviction Policies (Replacement Policies)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Eviction Policies (Replacement Policies)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-lru-least-recently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. LRU (Least Recently Used)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-lfu-least-frequently-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. LFU (Least Frequently Used)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-fifo-first-in-first-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. FIFO (First-In, First-Out)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-random-replacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Random Replacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-write-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Write Policies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Write Policies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-write-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Write-Through
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-write-behind-write-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Write-Behind (Write-Back)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-write-around" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Write-Around
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-write-aside-look-aside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D. Write-Aside (Look-Aside)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-challenges-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Challenges &amp; Solutions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-data-distribution-content-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Data Distribution (Content Strategy)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data Distribution (Content Strategy)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-optimization-the-heavy-object-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Optimization: The "Heavy Object" Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-optimization-the-active-user-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. Optimization: The "Active User" Strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-locality-of-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. Locality of Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-placement-of-caches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Placement of Cache(s)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Placement of Cache(s)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cache-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-mapping-internal-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Mapping (Internal Placement)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-distributed-caching-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Distributed Caching &amp; Scaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Distributed Caching &amp; Scaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A. Deployment Strategies
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="A. Deployment Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-in-memory-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. In-Memory Cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-centralized-cache-distributed-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Centralized Cache (Distributed Cache)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-the-scaling-problem-in-centralized-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B. The "Scaling Problem" in Centralized Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-the-solution-consistent-hashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C. The Solution: Consistent Hashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updated-summary-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updated Summary Decision Matrix
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="distributed-caching-and-performance-architecture"><strong>Distributed Caching and Performance Architecture</strong></h1>
+<h2 id="core-metric"><strong>Core Metric</strong></h2>
+<p>Cache performance is measured by Average Memory Access Time (AMAT):</p>
+<div class="arithmatex">\[AMAT = Hit \ Time + (Miss \ Rate \times Miss \ Penalty)\]</div>
+<p>To optimize AMAT, one must tune four key factors:</p>
+<ul>
+<li><strong>Eviction Policy</strong></li>
+<li><strong>Write Policy</strong></li>
+<li><strong>Data Distribution</strong></li>
+<li><strong>Cache Placement</strong>.</li>
+</ul>
+<hr />
+<h2 id="1-eviction-policies-replacement-policies"><strong>1. Eviction Policies (Replacement Policies)</strong></h2>
+<p>When the cache reaches capacity (is full), these policies dictate which specific data items must be removed (evicted) to make space for new incoming data,.</p>
+<h3 id="a-lru-least-recently-used"><strong>A. LRU (Least Recently Used)</strong></h3>
+<ul>
+<li><strong>Definition:</strong> This policy identifies and evicts the item that has not been accessed for the longest duration of time. It relies heavily on the principle of <strong>Temporal Locality</strong>,.</li>
+<li><strong>Standard Example:</strong> A web browser history. If you visit Site A, then B, then C, then D, and the cache is full, Site A (the earliest visited) is evicted first.</li>
+<li><strong>Specific Use Case:</strong> <strong>Social Media Feeds</strong> (e.g., Twitter/Instagram).</li>
+<li><strong>Reasoning:</strong></li>
+<li>Social media users prioritize <strong>recency</strong>.</li>
+<li>A post may have high historical engagement (e.g., 1 million likes) from 2 days ago, but it is less relevant to the user than a post from 1 hour ago.</li>
+<li>LRU ensures content remains fresh in the feed,.</li>
+</ul>
+<h3 id="b-lfu-least-frequently-used"><strong>B. LFU (Least Frequently Used)</strong></h3>
+<ul>
+<li><strong>Definition:</strong> This policy tracks the number of times a block or item is accessed. The block with the fewest total accesses (hits) is selected for eviction,.</li>
+<li><strong>Standard Example:</strong> A Content Delivery Network (CDN) storing video files. A viral video is kept; a one-time obscure video is dropped.</li>
+<li><strong>Specific Use Case:</strong> <strong>E-Commerce Catalogs</strong>.</li>
+<li><strong>Reasoning:</strong></li>
+<li>Popular products (e.g., a standard iPhone model) remain popular for long periods.</li>
+<li>LFU provides <strong>stability</strong> by preventing established popular items from being evicted by a momentary surge of new, less important items,.</li>
+<li><strong>Downside:</strong> It is susceptible to <strong>"Cache Pollution."</strong> An item that was extremely popular last month might stay in the cache forever due to a high historical frequency count, even if no one is watching or accessing it today.</li>
+</ul>
+<h3 id="c-fifo-first-in-first-out"><strong>C. FIFO (First-In, First-Out)</strong></h3>
+<ul>
+<li><strong>Definition:</strong> This policy evicts the oldest block added to the cache, regardless of how recently or frequently it has been used,.</li>
+<li><strong>Example:</strong> A printer buffer queue.</li>
+<li><strong>Downside:</strong> This policy can suffer from <strong>Belady's Anomaly</strong>, a phenomenon where increasing the amount of available cache memory actually <em>increases</em> the miss rate.</li>
+</ul>
+<h3 id="d-random-replacement"><strong>D. Random Replacement</strong></h3>
+<ul>
+<li><strong>Definition:</strong> The system randomly selects a victim block to evict.</li>
+<li><strong>Example:</strong> <strong>ARM processors</strong>.</li>
+<li><strong>Reasoning:</strong> This is used in hardware environments where the overhead of tracking LRU history is too expensive relative to the performance gain.</li>
+</ul>
+<hr />
+<h2 id="2-write-policies"><strong>2. Write Policies</strong></h2>
+<p>These policies determine how data consistency is managed between the <strong>Cache</strong> and the <strong>Database (DB)</strong> when data is modified.</p>
+<h3 id="a-write-through"><strong>A. Write-Through</strong></h3>
+<ul>
+<li><strong>Mechanism:</strong> Updates are written to the Cache and the DB <strong>simultaneously</strong>,.</li>
+<li><strong>Decision Criterion:</strong> Use this when <strong>Data Integrity</strong> is paramount (Safety &gt; Speed),.</li>
+<li><strong>Specific Example:</strong> <strong>Financial/Banking transactions</strong>. You cannot afford to lose a deposit record,.</li>
+<li><strong>Pros:</strong> Strong consistency; the Database is always up-to-date.</li>
+<li><strong>Cons:</strong> High latency, as the write speed is limited by the slower Database performance,.</li>
+</ul>
+<h3 id="b-write-behind-write-back"><strong>B. Write-Behind (Write-Back)</strong></h3>
+<ul>
+<li><strong>Mechanism:</strong> Updates are written <strong>only to the Cache</strong> initially. The Database is updated later (asynchronously),.</li>
+<li><strong>Decision Criterion:</strong> Use this when <strong>Write Speed</strong> is paramount (Speed &gt; Safety),.</li>
+<li><strong>Specific Example:</strong> <strong>Real-time analytics counters</strong> (e.g., YouTube view counts, "700 users watching"). Losing a few increments is acceptable in exchange for performance,.</li>
+<li><strong>Pros:</strong> Extremely low latency.</li>
+<li><strong>Cons:</strong> <strong>Data Loss Risk.</strong> If the cache crashes before it syncs with the DB, the updates are permanently lost,.</li>
+</ul>
+<h3 id="c-write-around"><strong>C. Write-Around</strong></h3>
+<ul>
+<li><strong>Mechanism:</strong> Data writes bypass the cache entirely and go <strong>directly to the DB</strong>. Data is only loaded into the cache if it is read later,.</li>
+<li><strong>Decision Criterion:</strong> Use for <strong>"Write-Once, Read-Rarely"</strong> data.</li>
+<li><strong>Specific Example:</strong> <strong>Log files</strong>, <strong>Data Backups</strong>, or uploading large media files,.</li>
+<li><strong>Pros:</strong> This prevents <strong>"Cache Flooding"</strong> (filling the valuable cache space with useless data that will not be read again),.</li>
+</ul>
+<h3 id="d-write-aside-look-aside"><strong>D. Write-Aside (Look-Aside)</strong></h3>
+<ul>
+<li><strong>Mechanism:</strong> The application code controls the flow. It checks the cache; if the data is missing, the application reads from the DB and manually updates the cache.</li>
+<li><strong>Use Case:</strong> General-purpose caching patterns (e.g., Memcached).</li>
+</ul>
+<h3 id="common-challenges-solutions"><strong>Common Challenges &amp; Solutions</strong></h3>
+<ul>
+<li><strong>Inconsistent Data:</strong> The DB and Cache hold different values.</li>
+<li><em>Solution:</em> Update the cache infrequently using Time-To-Live (TTL) or utilize a Write-Through policy.</li>
+<li><strong>Stale Reads:</strong> An update hits the DB, but subsequent reads still hit the old data in the Cache.</li>
+<li><em>Solution:</em> Ensure the write policy invalidates (deletes) the cache entry immediately upon a write operation.</li>
+</ul>
+<hr />
+<h2 id="3-data-distribution-content-strategy"><strong>3. Data Distribution (Content Strategy)</strong></h2>
+<p>Optimizing <em>what</em> you cache is just as critical as <em>how</em> you cache it.</p>
+<h3 id="a-optimization-the-heavy-object-problem"><strong>A. Optimization: The "Heavy Object" Problem</strong></h3>
+<ul>
+<li><strong>Issue:</strong> Caching a complex object (e.g., a massive User Profile containing history, settings, and logs) when the application only requires a single field (e.g., <code>username</code>). This fills memory with "dead weight".</li>
+<li><strong>Solution:</strong> <strong>Store only necessary data.</strong> Use Data Transfer Objects (DTOs) or flattened structures rather than caching full objects,.</li>
+</ul>
+<h3 id="b-optimization-the-active-user-strategy"><strong>B. Optimization: The "Active User" Strategy</strong></h3>
+<ul>
+<li><strong>Issue:</strong> In a system with 1 million users, caching "Recently Viewed Items" (e.g., T-shirt_IDs) for everyone consumes massive memory, even for users who are inactive.</li>
+<li><strong>Solution:</strong> <strong>Filter Active Users.</strong> Do not cache data for inactive users.</li>
+<li><strong>Filtering Metrics:</strong></li>
+<li><strong>Frequency:</strong> Select top users by <code>NUM_OF_LOG_INS</code> (e.g., User_32124 has 297 logins).</li>
+<li><strong>Recency:</strong> Select users with recent <code>LAST_LOG_IN</code> timestamps (e.g., User_32124 logged in at 21:43 today),.</li>
+</ul>
+<h3 id="c-locality-of-reference"><strong>C. Locality of Reference</strong></h3>
+<ul>
+<li><strong>Temporal Locality:</strong> If a data item is accessed now, it will likely be accessed again soon (e.g., Loop counters),.</li>
+<li><strong>Spatial Locality:</strong> If <code>Address X</code> is accessed, <code>Address X+1</code> will likely be accessed soon (e.g., Arrays).</li>
+<li><strong>Working Set Size:</strong> This refers to the amount of memory a process needs at a given time. If the Cache is smaller than the Working Set, <strong>Thrashing</strong> occurs (constant eviction leading to 0% performance).</li>
+</ul>
+<hr />
+<h2 id="4-placement-of-caches"><strong>4. Placement of Cache(s)</strong></h2>
+<h3 id="cache-hierarchy"><strong>Cache Hierarchy</strong></h3>
+<ul>
+<li><strong>L1/L2/L3:</strong> CPU-level caches,.</li>
+<li><strong>Client-Side:</strong> Browser cache (saves network calls),.</li>
+<li><strong>CDN:</strong> Geographically distributed static content (reduces latency by being physically closer to the user),.</li>
+</ul>
+<h3 id="cache-mapping-internal-placement"><strong>Cache Mapping (Internal Placement)</strong></h3>
+<ul>
+<li><strong>Direct Mapped:</strong> A block maps to 1 specific line. (Fastest, but high conflict).</li>
+<li><strong>Fully Associative:</strong> A block maps to <em>any</em> line. (Slow search, zero conflict).</li>
+<li><strong>Set Associative:</strong> A block maps to a specific <em>set</em> of lines. (Balance of speed and conflict).</li>
+</ul>
+<hr />
+<h2 id="5-distributed-caching-scaling"><strong>5. Distributed Caching &amp; Scaling</strong></h2>
+<p>When a system grows beyond a single server, <em>where</em> and <em>how</em> the cache is deployed becomes the critical determinant of performance.</p>
+<h3 id="a-deployment-strategies"><strong>A. Deployment Strategies</strong></h3>
+<h4 id="1-in-memory-cache"><strong>1. In-Memory Cache</strong></h4>
+<ul>
+<li><strong>Definition:</strong> The application server holds the cache locally within its own memory.</li>
+<li><strong>Architecture:</strong> Each instance of the application maintains its own private cache.</li>
+<li><strong>Pros:</strong> <strong>Zero network latency</strong> (fastest possible access).</li>
+<li><strong>Cons:</strong></li>
+<li><strong>Data Duplication:</strong> The same data is stored across multiple app instances, wasting memory.</li>
+<li><strong>Inconsistency:</strong> Instance A might hold different data than Instance B.</li>
+</ul>
+<h4 id="2-centralized-cache-distributed-cache"><strong>2. Centralized Cache (Distributed Cache)</strong></h4>
+<ul>
+<li><strong>Definition:</strong> A separate, shared layer of cache servers (e.g., Redis Cluster) accessible by all application nodes.</li>
+<li><strong>Pros:</strong> <strong>No Duplication.</strong> It acts as a single source of truth for cached data.</li>
+<li><strong>Cons:</strong> Network latency is added for every data fetch.</li>
+</ul>
+<h3 id="b-the-scaling-problem-in-centralized-caching"><strong>B. The "Scaling Problem" in Centralized Caching</strong></h3>
+<p>To scale a centralized cache, <strong>Sharding</strong> (splitting data into buckets based on IDs) is used. However, standard sharding faces a major issue when the cluster changes.</p>
+<ul>
+<li><strong>The Scenario:</strong> A cache server crashes, or a new server is added to handle load.</li>
+<li><strong>The Problem:</strong> Standard hashing uses <code>Key % N_Servers</code>. Changing the number of servers (<span class="arithmatex">\(N\)</span>) invalidates almost <strong>all</strong> existing mappings.</li>
+<li><strong>Consequence:</strong></li>
+<li>Massive cache misses occur.</li>
+<li><strong>Cache Warmup/Readiness</strong> takes a long time (minutes to days).</li>
+<li>The Database is overwhelmed by traffic, leading to a <strong>Thundering Herd</strong> problem while the cache rebuilds.</li>
+</ul>
+<h3 id="c-the-solution-consistent-hashing"><strong>C. The Solution: Consistent Hashing</strong></h3>
+<ul>
+<li><strong>Definition:</strong> A technique to map keys to cache nodes that minimizes key movement when the cluster resizes.</li>
+<li><strong>Mechanism (The Ring):</strong></li>
+<li><strong>The Ring:</strong> Both <strong>Cache Servers</strong> and <strong>Data Keys</strong> are hashed onto the same circular range (0 to <span class="arithmatex">\(2^{32}-1\)</span>).</li>
+<li><strong>Placement:</strong> A key is stored on the <strong>next server found moving clockwise</strong> on the ring.</li>
+<li>
+<p><strong>Selection Probability:</strong> The chance of a specific server being picked is <span class="arithmatex">\(1/N\)</span>.</p>
+</li>
+<li>
+<p><strong>Behavior on Change:</strong></p>
+</li>
+<li><strong>Node Removed:</strong> Only the keys belonging to that specific node are moved to the next neighbor.</li>
+<li><strong>Node Added:</strong> It only takes keys from its immediate successor.</li>
+<li>
+<p><strong>Result:</strong> Result: Only <span class="arithmatex">\(\approx \frac{K}{N}\)</span> keys need to be remapped (not the whole keyspace).</p>
+</li>
+<li>
+<p><strong>Optimizing Skewness (Virtual Nodes):</strong></p>
+</li>
+<li><strong>Problem:</strong> Data might be unevenly distributed (one server holds too much data) due to bad random hashing.</li>
+<li>
+<p><strong>Solution:</strong> Use <strong>Virtual Points</strong> (Virtual Nodes). Each physical server appears at multiple positions on the ring (e.g., "Server A1", "Server A2", "Server A3"). This spreads the load more evenly.</p>
+</li>
+<li>
+<p><strong>Benefits:</strong></p>
+</li>
+<li><strong>Stability:</strong> Adding/Removing servers is easy and safe.</li>
+<li><strong>Faster Recovery:</strong> Drastically reduces <strong>Cache Warmup time</strong> and increases <strong>Cache Readiness</strong> because the majority of the cache remains valid.</li>
+<li><strong>Real-world usage:</strong> Amazon DynamoDB, Redis Clusters, Cassandra.</li>
+</ul>
+<p><img alt="Consistent Hashing" src="../consistent-hashing.png" />
+<img alt="In-memory vs Centralized Cache" src="../Caching.png" /></p>
+<hr />
+<h2 id="updated-summary-decision-matrix"><strong>Updated Summary Decision Matrix</strong></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">I want to optimize for...</th>
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: left;">Recommended Strategy</th>
+<th style="text-align: left;">Why?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Freshness</strong></td>
+<td style="text-align: left;">Social Media Feed</td>
+<td style="text-align: left;"><strong>LRU</strong> Eviction</td>
+<td style="text-align: left;">Users care about <strong>recency</strong> (freshness), not history,.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Stability</strong></td>
+<td style="text-align: left;">E-Commerce Catalog</td>
+<td style="text-align: left;"><strong>LFU</strong> Eviction</td>
+<td style="text-align: left;">Popular products (iPhone) stay popular for long periods,.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Data Integrity</strong></td>
+<td style="text-align: left;">Banking / Inventory</td>
+<td style="text-align: left;"><strong>Write-Through</strong> Policy</td>
+<td style="text-align: left;"><strong>Data Integrity</strong> is critical. Zero data loss is allowed,.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Write Speed</strong></td>
+<td style="text-align: left;">View Counters / Likes</td>
+<td style="text-align: left;"><strong>Write-Behind</strong> (Write-Back)</td>
+<td style="text-align: left;"><strong>Write Speed</strong> is critical. Losing a few "likes" is acceptable.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cache Efficiency</strong></td>
+<td style="text-align: left;">Logs / Backups</td>
+<td style="text-align: left;"><strong>Write-Around</strong></td>
+<td style="text-align: left;">Do not pollute the cache with data you won't read again.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Memory Usage</strong></td>
+<td style="text-align: left;">Limited Memory</td>
+<td style="text-align: left;"><strong>Filter Active Users</strong></td>
+<td style="text-align: left;">Do not cache data for inactive users to save space.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Zero Latency</strong></td>
+<td style="text-align: left;">High Speed Req.</td>
+<td style="text-align: left;"><strong>In-Memory Cache</strong> (Local)</td>
+<td style="text-align: left;">Eliminates network calls.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Scalability</strong></td>
+<td style="text-align: left;">Large Scale Systems</td>
+<td style="text-align: left;"><strong>Centralized Cache</strong> with <strong>Consistent Hashing</strong></td>
+<td style="text-align: left;">Ensures consistency and easy scaling.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Resilience</strong></td>
+<td style="text-align: left;">Adding/Removing Nodes</td>
+<td style="text-align: left;"><strong>Consistent Hashing</strong></td>
+<td style="text-align: left;">Minimizes re-warmup time and prevents Thundering Herds.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
