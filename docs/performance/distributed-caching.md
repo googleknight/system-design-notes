@@ -189,8 +189,8 @@ To scale a centralized cache, **Sharding** (splitting data into buckets based on
   2.  **Faster Recovery:** Drastically reduces **Cache Warmup time** and increases **Cache Readiness** because the majority of the cache remains valid.
   3.  **Real-world usage:** Amazon DynamoDB, Redis Clusters, Cassandra.
 
-![Consistent Hashing](consistent-hashing.png)
-![In-memory vs Centralized Cache](Caching.png)
+![Consistent Hashing](../assets/images/consistent-hashing.png)
+![In-memory vs Centralized Cache](../assets/images/caching.png)
 
 ---
 

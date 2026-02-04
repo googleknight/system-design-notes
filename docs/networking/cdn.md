@@ -8,3 +8,5 @@ This check could be periodic, which happens every 10 seconds or so. Once it sees
 A. For example let's say some user places an order for 10 units in US, some user places an order of 50 units in India. While you had only 50 units total. Then when both of them will get processed it will fail as it is going beyond the total available. So for dynamic data it is best to have data in database as a single source of truth.
 
 Examples of CDN: Akamai, AWS Cloudfront, Cloudflare
+
+![Static Content: CDN vs Serverless](../assets/images/static-content-cdn-vs-serverless.png)

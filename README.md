@@ -27,8 +27,13 @@ This repository contains my system design study notes, served as a documentation
 
 ## 📂 Project Structure
 
-- `docs/`: Contains all raw Markdown notes and images.
-- `mkdocs.yml`: Configuration file for the MkDocs site (Material theme, plugins, and navigation).
+- `docs/`: Contains all raw Markdown notes and assets.
+  - `foundations/`: Core system design principles and reliability.
+  - `networking/`: DNS, Load Balancing, CDN, and Rate Limiting.
+  - `performance/`: Caching, Latency, and Traffic Surge management.
+  - `architecture/`: High-level architectural patterns like Microservices.
+  - `assets/images/`: Diagrams and visual guides.
+- `mkdocs.yml`: Configuration file for the MkDocs site.
 - `requirements.txt`: Python dependencies.
 
 ---

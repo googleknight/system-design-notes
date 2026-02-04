@@ -8,4 +8,4 @@
 - Local Rate Limiting: Multiple servers, having their own rate limiting set locally.Faster, but not efficient use of resources. Easy to implement
 - Centralized Rate Limiting: One of the server controls the rate limiting. Efficient use of resources but network latency. Allows global control.
 
-![Local Rate Limiting vs Centralized Rate Limiting](RateLimiting.png)
+![Local Rate Limiting vs Centralized Rate Limiting](../assets/images/rate-limiting.png)

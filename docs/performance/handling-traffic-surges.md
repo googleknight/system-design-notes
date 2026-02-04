@@ -36,4 +36,4 @@ To handle it one could:
 
 Ratelimiting: Answer the ones which you could afford while drop the rest. As making some users happy is better than making everyone unhappy.
 
-[Rate Limiting](/Rate%20Limiting.md)
+[Rate Limiting](../networking/rate-limiting.md)

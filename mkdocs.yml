@@ -57,16 +57,16 @@ extra_javascript:
 nav:
   - Home: index.md
   - Foundations:
-      - System Design Foundations: System Design.md
-      - Reliability: Reliability.md
+      - System Design Foundations: foundations/system-design.md
+      - Reliability: foundations/reliability.md
   - Networking & Traffic:
-      - DNS: DNS.md
-      - Load Balancing: LoadBalancer.md
-      - CDN: CDN.md
-      - Rate Limiting: Rate Limiting.md
+      - DNS: networking/dns.md
+      - Load Balancing: networking/load-balancing.md
+      - CDN: networking/cdn.md
+      - Rate Limiting: networking/rate-limiting.md
   - Performance:
-      - Distributed Caching: Caching.md
-      - High Latency: High Latency.md
-      - Handling Traffic Surges: Handling traffic surge.md
+      - Distributed Caching: performance/distributed-caching.md
+      - High Latency: performance/high-latency.md
+      - Handling Traffic Surges: performance/handling-traffic-surges.md
   - Architecture:
-      - Microservices: Microservices.md
+      - Microservices: architecture/microservices.md
