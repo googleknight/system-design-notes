@@ -11,4 +11,4 @@ These are handled by load balancers.
 
 For example: Amazon ELB. You can use pre defined algo for load balancing or write your own too.
 
-![alt text](Load_Balancing_Algorithms.png)
+![Load Balancing Algorithms](Load_Balancing_Algorithms.png)
