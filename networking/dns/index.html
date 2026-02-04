@@ -13,28 +13,28 @@
       
       
       
-        <link rel="prev" href="../LoadBalancer/">
+        <link rel="prev" href="../../foundations/reliability/">
       
       
-        <link rel="next" href="../Rate%20Limiting/">
+        <link rel="next" href="../load-balancing/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>CDN - System Design Interview Ready Notes</title>
+        <title>DNS - System Design Interview Ready Notes</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-do-you-add-new-files-to-cdn" class="md-skip">
+        <a href="#dns-server" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="System Design Interview Ready Notes" class="md-header__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+    <a href="../.." title="System Design Interview Ready Notes" class="md-header__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CDN
+              DNS
             
           </span>
         </div>
@@ -213,7 +213,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -234,7 +234,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../System%20Design/" class="md-tabs__link">
+        <a href="../../foundations/system-design/" class="md-tabs__link">
           
   
   
@@ -256,7 +256,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../DNS/" class="md-tabs__link">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -276,7 +276,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../Caching/" class="md-tabs__link">
+        <a href="../../performance/distributed-caching/" class="md-tabs__link">
           
   
   
@@ -296,7 +296,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../Microservices/" class="md-tabs__link">
+        <a href="../../architecture/microservices/" class="md-tabs__link">
           
   
   
@@ -330,7 +330,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="System Design Interview Ready Notes" class="md-nav__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+    <a href="../.." title="System Design Interview Ready Notes" class="md-nav__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -348,7 +348,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -429,7 +429,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../System%20Design/" class="md-nav__link">
+      <a href="../../foundations/system-design/" class="md-nav__link">
         
   
   
@@ -457,7 +457,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reliability/" class="md-nav__link">
+      <a href="../../foundations/reliability/" class="md-nav__link">
         
   
   
@@ -546,10 +546,35 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../DNS/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -565,6 +590,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dns-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS server
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -577,7 +631,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LoadBalancer/" class="md-nav__link">
+      <a href="../load-balancing/" class="md-nav__link">
         
   
   
@@ -602,35 +656,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    CDN
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cdn/" class="md-nav__link">
         
   
   
@@ -646,52 +675,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#how-do-you-add-new-files-to-cdn" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How do you add new files to CDN ?
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How do you add new files to CDN ?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-not-to-use-cdn-servers-for-storing-dynamic-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why not to use CDN Servers for storing dynamic content ?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -704,7 +687,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Rate%20Limiting/" class="md-nav__link">
+      <a href="../rate-limiting/" class="md-nav__link">
         
   
   
@@ -793,7 +776,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Caching/" class="md-nav__link">
+      <a href="../../performance/distributed-caching/" class="md-nav__link">
         
   
   
@@ -821,7 +804,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../High%20Latency/" class="md-nav__link">
+      <a href="../../performance/high-latency/" class="md-nav__link">
         
   
   
@@ -849,7 +832,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Handling%20traffic%20surge/" class="md-nav__link">
+      <a href="../../performance/handling-traffic-surges/" class="md-nav__link">
         
   
   
@@ -938,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Microservices/" class="md-nav__link">
+      <a href="../../architecture/microservices/" class="md-nav__link">
         
   
   
@@ -991,30 +974,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-do-you-add-new-files-to-cdn" class="md-nav__link">
+  <a href="#dns-server" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How do you add new files to CDN ?
+        DNS server
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="How do you add new files to CDN ?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#why-not-to-use-cdn-servers-for-storing-dynamic-content" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why not to use CDN Servers for storing dynamic content ?
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1035,14 +1001,10 @@
 
 
 
-  <h1>CDN</h1>
+  <h1>DNS</h1>
 
-<h3 id="how-do-you-add-new-files-to-cdn">How do you add new files to CDN ?</h3>
-<p>A. In your file system(either local like Hadoop or in cloud like S3) you have a dedicated folder which is being checked by the CDN service for any new file.
-This check could be periodic, which happens every 10 seconds or so. Once it sees a new file, it sends that file and its metadata to their cloud computer which pushes to all the CDN servers across the globe.</p>
-<h4 id="why-not-to-use-cdn-servers-for-storing-dynamic-content">Why not to use CDN Servers for storing dynamic content ?</h4>
-<p>A. For example let's say some user places an order for 10 units in US, some user places an order of 50 units in India. While you had only 50 units total. Then when both of them will get processed it will fail as it is going beyond the total available. So for dynamic data it is best to have data in database as a single source of truth.</p>
-<p>Examples of CDN: Akamai, AWS Cloudfront, Cloudflare</p>
+<h3 id="dns-server">DNS server</h3>
+<p>Browser goes to ISP goes and check Distributed DNS servers like Amazon Route 53, etc which holds key value pair. For a given domain name it resolves to ip address and return it back and browser's uses that, for future it caches the value.</p>
 
 
 
@@ -1098,12 +1060,12 @@ This check could be periodic, which happens every 10 seconds or so. Once it sees
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

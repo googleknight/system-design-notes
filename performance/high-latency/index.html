@@ -13,28 +13,28 @@
       
       
       
-        <link rel="prev" href="../High%20Latency/">
+        <link rel="prev" href="../distributed-caching/">
       
       
-        <link rel="next" href="../Microservices/">
+        <link rel="next" href="../handling-traffic-surges/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Handling Traffic Surges - System Design Interview Ready Notes</title>
+        <title>High Latency - System Design Interview Ready Notes</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -77,11 +77,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#in-cases-of-some-kind-of-flash-sale-for-some-hoursdays-you-prepare-your-system-for-it" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -92,7 +87,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="System Design Interview Ready Notes" class="md-header__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+    <a href="../.." title="System Design Interview Ready Notes" class="md-header__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Handling Traffic Surges
+              High Latency
             
           </span>
         </div>
@@ -213,7 +208,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -234,7 +229,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../System%20Design/" class="md-tabs__link">
+        <a href="../../foundations/system-design/" class="md-tabs__link">
           
   
   
@@ -254,7 +249,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../DNS/" class="md-tabs__link">
+        <a href="../../networking/dns/" class="md-tabs__link">
           
   
   
@@ -276,7 +271,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../Caching/" class="md-tabs__link">
+        <a href="../distributed-caching/" class="md-tabs__link">
           
   
   
@@ -296,7 +291,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../Microservices/" class="md-tabs__link">
+        <a href="../../architecture/microservices/" class="md-tabs__link">
           
   
   
@@ -330,7 +325,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="System Design Interview Ready Notes" class="md-nav__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
+    <a href="../.." title="System Design Interview Ready Notes" class="md-nav__button md-logo" aria-label="System Design Interview Ready Notes" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -348,7 +343,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -429,7 +424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../System%20Design/" class="md-nav__link">
+      <a href="../../foundations/system-design/" class="md-nav__link">
         
   
   
@@ -457,7 +452,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Reliability/" class="md-nav__link">
+      <a href="../../foundations/reliability/" class="md-nav__link">
         
   
   
@@ -546,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../DNS/" class="md-nav__link">
+      <a href="../../networking/dns/" class="md-nav__link">
         
   
   
@@ -574,7 +569,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../LoadBalancer/" class="md-nav__link">
+      <a href="../../networking/load-balancing/" class="md-nav__link">
         
   
   
@@ -602,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../CDN/" class="md-nav__link">
+      <a href="../../networking/cdn/" class="md-nav__link">
         
   
   
@@ -630,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Rate%20Limiting/" class="md-nav__link">
+      <a href="../../networking/rate-limiting/" class="md-nav__link">
         
   
   
@@ -722,7 +717,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Caching/" class="md-nav__link">
+      <a href="../distributed-caching/" class="md-nav__link">
         
   
   
@@ -730,34 +725,6 @@
     
   
     Distributed Caching
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../High%20Latency/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    High Latency
   
 
     
@@ -785,14 +752,14 @@
       
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
   
   
   <span class="md-ellipsis">
     
   
-    Handling Traffic Surges
+    High Latency
   
 
     
@@ -800,10 +767,21 @@
   
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+      </a>
       
-      <a href="./" class="md-nav__link md-nav__link--active">
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handling-traffic-surges/" class="md-nav__link">
         
   
   
@@ -819,68 +797,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#in-cases-of-some-kind-of-flash-sale-for-some-hoursdays-you-prepare-your-system-for-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In cases of some kind of flash sale for some hours/days, you prepare your system for it.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#in-case-of-sudden-jump-in-traffic-your-system-likely-to-crash-in-such-cases-how-do-you-handle-the-situation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In case of sudden jump in traffic your system likely to crash, in such cases how do you handle the situation.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-does-your-system-actually-handles-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How does your system actually handles requests?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#to-future-proof-your-system-for-increase-surges-in-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        To future proof your system for increase surges in traffic
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -954,7 +870,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../Microservices/" class="md-nav__link">
+      <a href="../../architecture/microservices/" class="md-nav__link">
         
   
   
@@ -1000,58 +916,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#in-cases-of-some-kind-of-flash-sale-for-some-hoursdays-you-prepare-your-system-for-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In cases of some kind of flash sale for some hours/days, you prepare your system for it.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#in-case-of-sudden-jump-in-traffic-your-system-likely-to-crash-in-such-cases-how-do-you-handle-the-situation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        In case of sudden jump in traffic your system likely to crash, in such cases how do you handle the situation.
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-does-your-system-actually-handles-requests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How does your system actually handles requests?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#to-future-proof-your-system-for-increase-surges-in-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        To future proof your system for increase surges in traffic
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1067,46 +931,19 @@
 
 
 
-  <h1>Handling Traffic Surges</h1>
+  <h1>High Latency</h1>
 
-<h3 id="in-cases-of-some-kind-of-flash-sale-for-some-hoursdays-you-prepare-your-system-for-it">In cases of some kind of flash sale for some hours/days, you prepare your system for it.</h3>
-<p>In context of e-commerce these are some common steps are:</p>
+<p>If the web app feels slow then check:</p>
 <ul>
-<li>Estimate the expected scale: Talk to business folks and understand the expected network traffic on your platform during that time. This can be roughly estimated by number of followers on social media platform, Google Ads and other ads usual conversion like ads shown to 100k and there is 1% usual conversion. Currently registered users, active users, etc.</li>
-<li>Pre-emptive scaling: Few hours before that scale up your system and keep them ready. Monitor the vital metrics. Do some kind of load testing and monitor the metrics, if everything is behaving normally. Progressively load your system to correctly understand how much computing power you need.</li>
-<li>Some useful metrics to monitor: request latency, memory utilized, currently active users.</li>
-<li>Understand the access patterns: The pattern in which data is accessed in your system. If there's a data which will be shown to every user like collection of products which are on sale. keep them in cdn, their image links too in cdn. Keep your cache warmed up.</li>
+<li>CDN is working fine or not.</li>
+<li>Page speed is slow or what ?</li>
+<li>Any particular page/flow is slower ?</li>
 </ul>
-<h3 id="in-case-of-sudden-jump-in-traffic-your-system-likely-to-crash-in-such-cases-how-do-you-handle-the-situation">In case of sudden jump in traffic your system likely to crash, in such cases how do you handle the situation.</h3>
+<p>Solutions:</p>
 <ul>
-<li>Begin identifying that are all the users who came were real users ?</li>
-<li>Some common patterns are, with same user ids there could be thousands of requests/minute, in this it could be from different ips too!(DDoS attack)</li>
-<li>Gate-keeping to avoid malicious attacks: Use Cloud providers or CDN offers solution to identify and stop them. Eg.: Cloudflare, AWS Web application firewall. On server side have a firewall looking at the requests.</li>
-<li>Graceful degradation incase of over-loaded requests: Serve high priority requests first and lower ones later or drop them with an error message.</li>
-<li>Discarding requests altogether if needed:</li>
-<li>In a request flow, at any node(application server/cache/db etc) if the upstream or downstream service is failing or restarting, it is best to discard requests to give time to recover for that service(s).</li>
-<li>Short-circuit: Downstream services are overloaded so current service starts failing the requests to the downstream services.</li>
-<li>Back-pressure: When the downstream service is overloaded and it starts failing requests from upstream services</li>
-<li>Usually an error is thrown which signifies that it is a temporary error rather than permanent, so maybe try after a minute or so.</li>
+<li>Move data closer to user</li>
+<li>Browser level and server level caching</li>
 </ul>
-<h3 id="how-does-your-system-actually-handles-requests">How does your system actually handles requests?</h3>
-<p>Without any configuration by default most of the servers follow a queue,i.e. FIFO pattern, and faces head-of-line blocking.
-To handle it one could:</p>
-<ul>
-<li>use Parallelism</li>
-<li>Parallel queues and servers.</li>
-<li>
-<p>Multiple VM in the servers.</p>
-</li>
-<li>
-<p>Concurrency</p>
-</li>
-<li>Same queue is used but multi-threaded approach is used to process requests out of order.( More time taking requests are being processed later or asynchronously)</li>
-<li>Uses protocol which supports having multiple request queues, like gRPC.</li>
-</ul>
-<h3 id="to-future-proof-your-system-for-increase-surges-in-traffic">To future proof your system for increase surges in traffic</h3>
-<p>Ratelimiting: Answer the ones which you could afford while drop the rest. As making some users happy is better than making everyone unhappy.</p>
-<p><a href="/Rate%20Limiting.md">Rate Limiting</a></p>
 
 
 
@@ -1162,12 +999,12 @@ To handle it one could:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
